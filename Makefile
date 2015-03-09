@@ -3,21 +3,24 @@ all: a1 a2 t1 t2 restore
 a1:
 	python vowel_restore.py;
 	fstcompile --isymbols=./Syms/A1.syms --keep_isymbols --acceptor < ./Txt/A1.txt > ./FST/A1.fst ;
-	fstdeterminize ./FST/A1.fst ./FST/A1_det.fst ;
+	fstrmepsilon ./FST/A1.fst ./FST/A1_rmeps.fst;
+	fstdeterminize ./FST/A1_rmeps.fst ./FST/A1_det.fst ;
 	fstminimize ./FST/A1_det.fst ./FST/A1_min.fst ;
-	fstdraw --acceptor < ./FST/A1_min.fst | dot -Tps > ./PS/A1_min.ps
+	fstdraw --acceptor < ./FST/A1_min.fst | dot -Tps > ./PS/A1_min.ps;
 
 a2:
 	fstcompile --isymbols=./Syms/A1.syms --keep_isymbols --acceptor < ./Txt/space.txt > ./FST/space.fst ;
-	fstconcat ./FST/A1_min.fst ./FST/space.fst > ./FST/w.fst ;
-	fstclosure ./FST/w.fst > ./FST/w_clos.fst ;
-	fstconcat ./FST/w_clos.fst ./FST/A1_min.fst > ./FST/v.fst ;
 	fstcompile --isymbols=./Syms/A1.syms --keep_isymbols --acceptor < ./Txt/eps.txt > ./FST/eps.fst ;
-	fstunion ./FST/v.fst ./FST/eps.fst > ./FST/y.fst ;
 	fstcompile --isymbols=./Syms/A1.syms --keep_isymbols --acceptor < ./Txt/newline.txt > ./FST/newline.fst ;
-	fstunion ./FST/y.fst ./FST/newline.fst > ./FST/z.fst ;
-	fstclosure ./FST/z.fst > ./FST/A2.fst ;
-	fstdeterminize ./FST/A2.fst > ./FST/A2_det.fst ;
+	fstconcat ./FST/space.fst ./FST/A1_min.fst > ./FST/ua.fst ;
+	fstclosure ./FST/ua.fst > ./FST/ua_clos.fst ;
+	fstconcat ./FST/A1_min.fst ./FST/ua_clos.fst > ./FST/aua.fst ;
+	fstunion ./FST/aua.fst ./FST/eps.fst > ./FST/b.fst ;
+	fstconcat ./FST/newline.fst ./FST/b.fst > ./FST/nb.fst ;
+	fstclosure ./FST/nb.fst > ./FST/nb_clos.fst ;
+	fstconcat ./FST/b.fst ./FST/nb_clos.fst > ./FST/A2.fst ;
+	fstrmepsilon ./FST/A2.fst ./FST/A2_rmeps.fst;
+	fstdeterminize ./FST/A2_rmeps.fst > ./FST/A2_det.fst ;
 	fstminimize ./FST/A2_det.fst > ./FST/A2_min.fst ;
 	fstdraw --acceptor <  ./FST/A2_min.fst | dot -Tps > ./PS/A2_min.ps;
 

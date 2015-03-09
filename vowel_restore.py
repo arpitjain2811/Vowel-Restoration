@@ -5,7 +5,7 @@ vocab = {}
 ranks = {}
 words = []
 syms = Set()
-k = 100
+k = 10
 for line in f:
     rank,word,score = line.replace(',',' ').rstrip().split(' ',3)
     vocab[word.lower()] = float(score)
