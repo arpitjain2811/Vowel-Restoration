@@ -41,15 +41,6 @@ restore:
 	fstshortestpath ./FST/output.fst | fsttopsort | fstprint -osymbols=./Syms/A1.syms > ./FST/output.txtfst;
 	python outtxtfst2tokens.py < ./FST/output.txtfst > output.txt;
 
-#farcompilestrings -token_type=utf8 -keep_symbols=1 --symbols=./Syms/A1.syms string.txt > string.far;
-#farextract string.far;
-#echo|fstcompile --isymbols=./Syms/A1.syms --osymbols=./Syms/A1.syms --keep_isymbols --keep_osymbols >union.fst;
-#fstunion union.fst string.txt-1 > foo.fst;
-#mv foo.fst union.fst;
-#fstunion union.fst string.txt-2 > foo.fst;
-#mv foo.fst union.fst;
-#fstprint union.fst | fstcompile | fstarcsort ­­sort_type=olabel > union­log.fst
-#fstcompose union-l.fst ./FST/T2.fst
 clean:
 	rm -rf FST/*.*fst;
 	rm -rf PS/*.ps
